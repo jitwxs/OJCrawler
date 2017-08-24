@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 
 patHost = 'https://www.patest.cn'
 baseLoc = os.getcwd()
+name = 'PAT'
 
 def getHTMLText(url):
     try:
@@ -68,11 +69,11 @@ def parsePromblem(url):
         f.write('\n问题内容：\n'+problemContext)
 
 def getInfo(url):
-    global baseLoc,patHost
-    patLoc = baseLoc + '\PAT'
-    if not os.path.exists(baseLoc + '\PAT'):
-        os.mkdir('PAT')
-        print('开始爬取: PAT')
+    global baseLoc,patHost,name
+    patLoc = baseLoc + '\\' + name
+    if not os.path.exists(baseLoc + '\\' + name):
+        os.mkdir(name)
+        print('开始爬取: ' + name)
     os.chdir(patLoc)
     examDict = getExamDict(url)
     for examKey,examValue in examDict.items():
