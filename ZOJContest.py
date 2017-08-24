@@ -51,27 +51,15 @@ def parsePromblem(url):
     soup = getSoupObj(url)
     content = soup('div',{'id':'content_body'})
     if len(content) != 0:
-        title = content[0].find_all('span',{'class':'bigProblemTitle'})[0]
-        timeLimit = 
-        memoryLimit = 
-        print(content)
-##    title = soup('h1')[0].text
-##    problemInfo = soup('div',{'class':'rfloat','id':'problemInfo'})
-##    problemContent = soup('div',{'id':'problemContent'})
-##    if len(problemInfo) != 0:
-##        timeLimit = problemInfo[0].find_all('div',{'class':'limit'})[0].find_all('div',{'class':'value'})[0].text
-##        memoryLimit = problemInfo[0].find_all('div',{'class':'limit'})[1].find_all('div',{'class':'value'})[0].text
-##        codeLimit = problemInfo[0].find_all('div',{'class':'limit'})[2].find_all('div',{'class':'value'})[0].text
-##    if len(problemContent) != 0:
-##        problemContext = problemContent[0].text
-##    problemLoc = os.getcwd()+'//'+title + '.txt'
-##    print('正在存储题目：'+ title + '\n')
-##    with open(problemLoc, 'w') as f:
-##        f.write('标题:\n\n'+title)
-##        f.write('\n时间限制：\n'+timeLimit)
-##        f.write('内存限制：\n'+memoryLimit)
-##        f.write('代码长度限制：\n'+codeLimit)
-##        f.write('\n问题内容：\n'+problemContext)
+        title = content[0].find_all('span',{'class':'bigProblemTitle'})[0].text
+        dr = re.compile(r'<[^>]+>',re.S)
+        text = dr.sub('',str(content[0]))
+    dr = re.compile(r'[<>,/,\,|,:,"",*,?]')
+    title = dr.sub('',title)
+    problemLoc = os.getcwd()+'\\'+ title + '.txt'
+    print('正在存储题目：'+ title + '\n')
+    with open(problemLoc, 'w',encoding='utf-8') as f:
+        f.write(text)
 
 def getInfo(url):
     global baseLoc,zojHost,name
@@ -95,7 +83,6 @@ def getInfo(url):
 
 if __name__=="__main__":
     contestUrl = zojHost + '/onlinejudge/showContests.do'
-##    print('************ZOJ竞赛题目爬虫************')
-##    input('按Enter键开始爬取')
-##    getInfo(contestUrl)
-    parsePromblem(zojHost + '/onlinejudge/showContestProblem.do?problemId=5577')
+    print('************ZOJ竞赛题目爬虫************')
+    input('按Enter键开始爬取')
+    getInfo(contestUrl)
